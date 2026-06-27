@@ -2,6 +2,7 @@
 **Módulo de Orquestração e Deploy Automatizado (VM10)**
 
 Projeto desenvolvido para a disciplina de Laboratório de Redes. 
+
 ![Ansible](https://img.shields.io/badge/Ansible-Automacao-red)
 ![Terraform](https://img.shields.io/badge/Terraform-IaC-blue)
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
