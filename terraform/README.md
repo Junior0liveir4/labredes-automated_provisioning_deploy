@@ -26,20 +26,19 @@ terraform {
   required_providers {
     openstack = {
       source  = "terraform-provider-openstack/openstack"
-      version = "~> 1.50.0" 
+      version = "~> 1.50.0" # Utilize a versão mais recente
     }
   }
 }
-
 provider "openstack" {
   cloud = "labredes"
 
   endpoint_overrides = {
-    "compute"  = "[http://10.10.2.9:8774/v2.1/90f1c80288444ed4bb4e41b5aa2d003f/](http://10.10.2.9:8774/v2.1/90f1c80288444ed4bb4e41b5aa2d003f/)"
-    "network"  = "[http://10.10.2.9:9696/v2.0/](http://10.10.2.9:9696/v2.0/)"
-    "image"    = "[http://10.10.2.9:9292/v2/](http://10.10.2.9:9292/v2/)"
-    "volumev3" = "[http://10.10.2.9:8776/v3/90f1c80288444ed4bb4e41b5aa2d003f/](http://10.10.2.9:8776/v3/90f1c80288444ed4bb4e41b5aa2d003f/)"
-    "identity" = "[http://10.10.2.9:5000/v3/](http://10.10.2.9:5000/v3/)"
+    "compute"  = "http://10.10.2.9:8774/v2.1/90f1c80288444ed4bb4e41b5aa2d003f/"
+    "network"  = "http://10.10.2.9:9696/v2.0/"
+    "image"    = "http://10.10.2.9:9292/v2/"
+    "volumev3" = "http://10.10.2.9:8776/v3/90f1c80288444ed4bb4e41b5aa2d003f/"
+    "identity" = "http://10.10.2.9:5000/v3/"
   }
 }
 ```
