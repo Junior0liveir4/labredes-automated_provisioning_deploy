@@ -10,8 +10,8 @@ O objetivo desta fase é estabelecer a conectividade de rede com o ambiente de p
 
 A VM10 foi provisionada com duas interfaces de rede físicas virtuais:
 
-- `ens3`: Conectada à rede de gerência (labredes1), recebendo endereçamento via DHCP.
-- `ens7`: Conectada à rede interna de provisionamento (VLAN10_DEPLOY), exigindo configuração de IP estático.
+* `ens3`: Conectada à rede de gerência (labredes1), recebendo endereçamento via DHCP.
+* `ens7`: Conectada à rede interna de provisionamento (VLAN10_DEPLOY), exigindo configuração de IP estático.
 
 ### 1.1. Ativação Temporária em Memória
 
@@ -20,14 +20,14 @@ Para estabelecer acesso imediato à rede interna de deploy, os seguintes comando
 ```
 ip link set ens7 up
 ```
-Função do comando: Altera o estado administrativo da interface de rede ens7 de "DOWN" para "UP".
+**Função do comando:** Altera o estado administrativo da interface de rede ens7 de "DOWN" para "UP".
 Isso instrui o kernel do Linux a ativar a placa de rede para o envio e recebimento de quadros ethernet na Camada 2.
 
 
 ```
 ip addr add 10.0.110.8/24 dev ens7
 ```
-Função do comando: Vincula o endereço IPv4 estático `10.0.110.8`, com a máscara de sub-rede `/24 (255.255.255.0)`, à interface `ens7`.
+**Função do comando:** Vincula o endereço IPv4 estático `10.0.110.8`, com a máscara de sub-rede `/24 (255.255.255.0)`, à interface `ens7`.
 Esta configuração ocorre na memória volátil e permite o roteamento imediato de pacotes IP, mas não sobrevive a uma reinicialização do sistema.
 
 ### 1.2. Configuração de Persistência (Netplan)
@@ -66,7 +66,7 @@ Aplique as configurações:
 ```
 netplan apply
 ```
-Função do comando: O utilitário lê a estrutura de dados declarada no arquivo YAML, compila as informações e aplica o estado desejado ao renderizador de rede do sistema (neste caso, o systemd-networkd). Isso regrava as tabelas de roteamento e endereçamento de forma definitiva no disco.
+**Função do comando:** O utilitário lê a estrutura de dados declarada no arquivo YAML, compila as informações e aplica o estado desejado ao renderizador de rede do sistema (neste caso, o systemd-networkd). Isso regrava as tabelas de roteamento e endereçamento de forma definitiva no disco.
 
 ---
 
@@ -77,7 +77,7 @@ Antes de proceder com a instalação de novos softwares, os pacotes do sistema o
 apt update && apt upgrade -y
 ```
 
-Função do comando: `apt update`: Consulta os servidores remotos configurados no sistema e atualiza a lista local de metadados de softwares disponíveis.
+**Função do comando:** `apt update`: Consulta os servidores remotos configurados no sistema e atualiza a lista local de metadados de softwares disponíveis.
 
 `apt upgrade -y`: Compara as versões dos softwares instalados localmente com a lista de metadados atualizada. Realiza o download e a substituição dos binários desatualizados.
 
@@ -85,60 +85,14 @@ Função do comando: `apt update`: Consulta os servidores remotos configurados n
 
 ---
 
-## 🛠 3. Instalação das Ferramentas de Orquestração
-
-### 3.1. Ansible (Gerência de Configuração)
-
-O Ansible é a ferramenta responsável por acessar remotamente as outras VMs da topologia e injetar configurações em seus sistemas operacionais.
-Baixar e instalar o Ansible:
-```
-apt install -y ansible
-```
-
-Função do comando: Realiza o download do motor de execução do Ansible e de suas bibliotecas dependentes (baseadas em Python) a partir do repositório oficial do Ubuntu. O binário ansible passa a ficar disponível no caminho de execução ($PATH) do sistema.
-
-### 3.2. Terraform (Infraestrutura como Código)
-
-O Terraform é responsável por enviar comandos declarativos para a nuvem OpenStack, instruindo-a a criar o hardware virtual (VMs, discos e conexões de rede).
-```
-apt install -y gnupg software-properties-common curl
-```
-
-Função do comando: Instala pacotes utilitários obrigatórios.
-`gnupg`: permite manipulação e validação de chaves criptográficas;
-
-`software-properties-common`: fornece ferramentas para adicionar repositórios de terceiros ao sistema;
-
-`curl`: é um cliente de transferência de dados via protocolos web (HTTP/HTTPS).
-
-Chave GPG da HashiCorp:
-```
-curl -fsSL [https://apt.releases.hashicorp.com/gpg](https://apt.releases.hashicorp.com/gpg) | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-```
-Função do comando: `curl`: faz o download da chave criptográfica pública da HashiCorp (desenvolvedora do Terraform);
-
-`|`: redireciona essa chave baixada diretamente para o comando `gpg --dearmor`;
-
-`gpg --dearmor`: converte o arquivo do formato texto (ASCII) para o formato binário, salvando-o no diretório de chaves de segurança do sistema. Isso garante a autenticidade dos pacotes do Terraform.
-```
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] [https://apt.releases.hashicorp.com](https://apt.releases.hashicorp.com) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-```
-Função do comando: Constrói uma string contendo a URL do repositório oficial do Terraform e a vincula à chave criptográfica salva anteriormente. O comando `tee` grava essa string em um novo arquivo dentro do diretório de fontes do gerenciador de pacotes apt.
-
-Instalação do Terraform:
-```
-apt update && apt install -y terraform
-```
-Função do comando: Atualiza os metadados do sistema para incluir os softwares do novo repositório da HashiCorp e, em seguida, baixa e instala o binário compilado do Terraform.
-
-### 3.3. OpenStack Client (Interface de Linha de Comando da Nuvem)
+## 🛠 3. Instalação do OpenStack Client (Interface de Linha de Comando da Nuvem)
 
 Esta ferramenta abstrai as requisições HTTP/REST, permitindo consultar IDs de rede, listar instâncias e inserir chaves SSH na nuvem via linha de comando.
 ```
 apt install -y python3-pip python3-dev
 apt install -y python3-openstackclient
 ```
-Função dos comandos: O primeiro comando instala o gerenciador de pacotes da linguagem Python (pip) e as bibliotecas de desenvolvimento C/C++ necessárias para a compilação de extensões. O segundo comando utiliza o repositório do Ubuntu para baixar o cliente unificado do OpenStack e suas dependências criptográficas.
+**Função dos comandos:** O primeiro comando instala o gerenciador de pacotes da linguagem Python (pip) e as bibliotecas de desenvolvimento C/C++ necessárias para a compilação de extensões. O segundo comando utiliza o repositório do Ubuntu para baixar o cliente unificado do OpenStack e suas dependências criptográficas.
 
 ### 3.4. Docker (Motor de Contêineres)
 
@@ -147,13 +101,13 @@ O Docker é necessário para criar, isolar e executar serviços empacotados em a
 curl -fsSL [https://get.docker.com](https://get.docker.com) | sudo sh
 ```
 
-Função do comando: `curl`: faz o download do script oficial de instalação automatizada do Docker;
+**Função do comando:** `curl`: faz o download do script oficial de instalação automatizada do Docker;
 
 `| sudo sh`: executa esse script com privilégios de superusuário. O script encarrega-se de adicionar os repositórios do Docker, baixar os binários do daemon (dockerd) e do cliente CLI (docker), e iniciar o serviço em segundo plano.
 ```
 sudo usermod -aG docker $USER
 ```
-Função do comando: Modifica as propriedades do usuário atual logado no sistema (`$USER`), anexando-o (`-aG`) ao grupo de segurança denominado docker. Isso concede ao usuário a permissão de leitura e escrita no soquete do sistema (`/var/run/docker.sock`), permitindo executar comandos do Docker sem a necessidade de prefixá-los com sudo.
+**Função do comando:** Modifica as propriedades do usuário atual logado no sistema (`$USER`), anexando-o (`-aG`) ao grupo de segurança denominado docker. Isso concede ao usuário a permissão de leitura e escrita no soquete do sistema (`/var/run/docker.sock`), permitindo executar comandos do Docker sem a necessidade de prefixá-los com sudo.
 
 ---
 
@@ -167,7 +121,7 @@ mkdir -p ~/.config/openstack
 nano ~/.config/openstack/clouds.yaml
 ```
 
-Função dos comandos: `mkdir -p`: cria a estrutura de diretórios ocultos no diretório home do usuário logado;
+**Função dos comandos:** `mkdir -p`: cria a estrutura de diretórios ocultos no diretório home do usuário logado;
 
 `nano`: abre o editor de texto para a criação do arquivo `clouds.yaml`.
 
@@ -192,14 +146,14 @@ clouds:
     volume_endpoint_override: "http://10.10.2.9:8776"
 ```
 
-Estrutura do arquivo: Este arquivo em formato YAML armazena as credenciais de autenticação (usuário, senha, IDs de projeto). As chaves terminadas em `_endpoint_override` instruem explicitamente as ferramentas a enviarem as requisições REST para URLs estáticas (Nova, Glance, Neutron e Cinder), otimizando a comunicação e prevenindo falhas no serviço de descoberta (discovery) do OpenStack.
+**Estrutura do arquivo:** Este arquivo em formato YAML armazena as credenciais de autenticação (usuário, senha, IDs de projeto). As chaves terminadas em `_endpoint_override` instruem explicitamente as ferramentas a enviarem as requisições REST para URLs estáticas (Nova, Glance, Neutron e Cinder), otimizando a comunicação e prevenindo falhas no serviço de descoberta (discovery) do OpenStack.
 
 Aplique a variável de ambiente:
 ```
 export OS_CLOUD=labredes
 ```
 
-Função do comando: Declara uma variável de ambiente na sessão atual do terminal. O Terraform e o OpenStack Client leem esta variável em tempo de execução e buscam o bloco de dados nomeado labredes dentro do arquivo `clouds.yaml` para assinar digitalmente suas requisições HTTP à nuvem.
+**Função do comando:** Declara uma variável de ambiente na sessão atual do terminal. O Terraform e o OpenStack Client leem esta variável em tempo de execução e buscam o bloco de dados nomeado labredes dentro do arquivo `clouds.yaml` para assinar digitalmente suas requisições HTTP à nuvem.
 
 ---
 
@@ -210,7 +164,7 @@ Para garantir acesso de gerência às máquinas virtuais criadas sem a necessida
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/labredes_key -N ""
 ```
 
-Função do comando: `ssh-keygen`: Invoca o gerador de chaves criptográficas do sistema.
+**Função do comando:** `ssh-keygen`: Invoca o gerador de chaves criptográficas do sistema.
 
 `-t rsa`: Seleciona o algoritmo matemático base (RSA).
 
@@ -225,9 +179,40 @@ Confirmação da criação da chave pública:
 openstack keypair create --public-key ~/.ssh/labredes_key.pub labredes_key
 ```
 
-Função do comando: O utilitário do OpenStack lê o conteúdo em texto plano do arquivo da chave pública (`.pub`) e realiza uma requisição POST à API de Computação (Nova) da nuvem. O OpenStack armazena essa chave pública em seu banco de dados sob o identificador lógico `labredes_key`. Durante o provisionamento das novas instâncias pelo Terraform, a nuvem injeta o conteúdo desta chave pública dentro do sistema operacional das novas VMs, autorizando conexões oriundas exclusivamente de quem possuir a chave privada (A VM10).
+**Função do comando:** O utilitário do OpenStack lê o conteúdo em texto plano do arquivo da chave pública (`.pub`) e realiza uma requisição POST à API de Computação (Nova) da nuvem. O OpenStack armazena essa chave pública em seu banco de dados sob o identificador lógico `labredes_key`. Durante o provisionamento das novas instâncias pelo Terraform, a nuvem injeta o conteúdo desta chave pública dentro do sistema operacional das novas VMs, autorizando conexões oriundas exclusivamente de quem possuir a chave privada (A VM10).
 
 Confirmação da criação da chave pública:
 ```
 openstack keypair list
 ```
+
+---
+## 💡 Comandos Úteis do OpenStack Client
+
+**🛠 Comandos de Identidade e Autenticação**
+* `openstack token issue`: Solicita e exibe o token de autenticação temporário atual.
+
+* `openstack service list`: Lista todos os serviços registrados no catálogo do Keystone (Identidade).
+
+* `openstack endpoint list`: Exibe as URLs de serviço (endpoints) onde as APIs de computação, rede e volumes estão respondendo.
+
+**💻 Comandos de Computação (Nova)**
+* `openstack server list`: Lista todas as instâncias (VMs) provisionadas no projeto, mostrando nomes, status e endereços IP.
+
+* `openstack server show <nome_da_vm>`: Exibe detalhes técnicos de uma máquina virtual específica, como o flavor, os dispositivos de rede atrelados e a imagem de origem.
+
+* `openstack flavor list`: Lista os tipos de hardware (vCPU, RAM, Disco) disponíveis para criação de instâncias.
+
+* `openstack keypair list`: Lista todas as chaves SSH registradas no projeto que estão disponíveis para serem injetadas nas VMs.
+
+**🌐 Comandos de Rede (Neutron)**
+* `openstack network list`: Lista todas as redes lógicas (VLANs e redes de gerência) criadas no ambiente.
+
+* `openstack port list`: Exibe todas as portas virtuais conectadas ao barramento do OpenStack, incluindo os endereços MAC associados.
+
+* `openstack security group list`: Lista os grupos de segurança (Firewalls virtuais) que regem as políticas de entrada e saída das VMs.
+
+**📦 Comandos de Imagens e Volumes (Glance/Cinder)**
+* `openstack image list`: Lista as imagens de sistemas operacionais (ex: Ubuntu 24.04 LTS) disponíveis para o deploy das VMs.
+
+* `openstack volume list`: Exibe os volumes de armazenamento (discos rígidos virtuais) provisionados.
