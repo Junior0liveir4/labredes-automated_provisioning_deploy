@@ -82,7 +82,9 @@ apt update && apt upgrade -y
 `apt upgrade -y`: Compara as versões dos softwares instalados localmente com a lista de metadados atualizada. Realiza o download e a substituição dos binários desatualizados.
 
 `-y`: suprime os prompts de confirmação, aprovando automaticamente as substituições.
+
 ---
+
 ## 🐳 3. Instalação do Docker (Motor de Contêineres)
 
 O Docker é necessário para criar, isolar e executar serviços empacotados em ambientes controlados.
