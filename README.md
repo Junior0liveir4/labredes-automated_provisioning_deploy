@@ -76,7 +76,8 @@ Para garantir o isolamento de responsabilidades, o repositório é segmentado em
 │   ├── configurar_*.yml  # Playbooks específicas de configuração por VM
 │   └── README.md         # Documentação específica de Gerência de Configuração
 │
-└── README.md             # Documentação principal da plataforma
+├── README.md
+└── VM10_SETUP.md            # Documentação principal da plataforma
 
 ```
 ---
