@@ -27,7 +27,7 @@ Isso instrui o kernel do Linux a ativar a placa de rede para o envio e recebimen
 ```
 ip addr add 10.0.110.8/24 dev ens7
 ```
-Função do comando: Vincula o endereço IPv4 estático 10.0.110.8, com a máscara de sub-rede /24 (255.255.255.0), à interface ens7.
+Função do comando: Vincula o endereço IPv4 estático `10.0.110.8`, com a máscara de sub-rede `/24 (255.255.255.0)`, à interface `ens7`.
 Esta configuração ocorre na memória volátil e permite o roteamento imediato de pacotes IP, mas não sobrevive a uma reinicialização do sistema.
 
 ### 1.2. Configuração de Persistência (Netplan)
