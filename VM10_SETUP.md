@@ -85,9 +85,11 @@ Função do comando: `apt update`: Consulta os servidores remotos configurados n
 
 `-y`: suprime os prompts de confirmação, aprovando automaticamente as substituições.
 
-3. Instalação das Ferramentas de Orquestração
+---
 
-3.1. Ansible (Gerência de Configuração)
+## 🛠 3. Instalação das Ferramentas de Orquestração
+
+### 3.1. Ansible (Gerência de Configuração)
 
 O Ansible é a ferramenta responsável por acessar remotamente as outras VMs da topologia e injetar configurações em seus sistemas operacionais.
 
