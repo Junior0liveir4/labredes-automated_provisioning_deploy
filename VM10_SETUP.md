@@ -1,4 +1,4 @@
-# Configuração da VM Orquestradora (VM10)
+# 🖥️ Configuração da VM Orquestradora (VM10)
 
 Este documento detalha o processo de inicialização e preparação do sistema operacional Ubuntu 24.04 LTS na máquina VM10 (Deploy Automatizado).
 
@@ -6,7 +6,7 @@ O objetivo desta fase é estabelecer a conectividade de rede com o ambiente de p
 
 ---
 
-## 1. Configuração das Interfaces de Rede
+## 🔗 1. Configuração das Interfaces de Rede
 
 A VM10 foi provisionada com duas interfaces de rede físicas virtuais:
 
@@ -68,17 +68,14 @@ Função do comando: O utilitário lê a estrutura de dados declarada no arquivo
 
 ---
 
-## 2. Atualização do Sistema Base
+## ⚙️ 2. Atualização do Sistema Base
 
 Antes de proceder com a instalação de novos softwares, os pacotes do sistema operacional foram atualizados para garantir estabilidade e segurança.
-
+```
 apt update && apt upgrade -y
-
+```
 
 Função do comando: * apt update: Consulta os servidores remotos configurados no sistema e atualiza a lista local de metadados de softwares disponíveis.
-
-&&: Operador lógico que instrui o terminal a executar o próximo comando apenas se o primeiro for concluído sem erros.
-
 apt upgrade -y: Compara as versões dos softwares instalados localmente com a lista de metadados atualizada. Realiza o download e a substituição dos binários desatualizados. A flag -y (yes) suprime os prompts de confirmação, aprovando automaticamente as substituições.
 
 3. Instalação das Ferramentas de Orquestração
