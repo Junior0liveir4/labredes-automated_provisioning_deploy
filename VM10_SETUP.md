@@ -83,18 +83,7 @@ apt update && apt upgrade -y
 
 `-y`: suprime os prompts de confirmação, aprovando automaticamente as substituições.
 
----
-
-## 🛠 3. Instalação do OpenStack Client (Interface de Linha de Comando da Nuvem)
-
-Esta ferramenta abstrai as requisições HTTP/REST, permitindo consultar IDs de rede, listar instâncias e inserir chaves SSH na nuvem via linha de comando.
-```
-apt install -y python3-pip python3-dev
-apt install -y python3-openstackclient
-```
-**Função dos comandos:** O primeiro comando instala o gerenciador de pacotes da linguagem Python (pip) e as bibliotecas de desenvolvimento C/C++ necessárias para a compilação de extensões. O segundo comando utiliza o repositório do Ubuntu para baixar o cliente unificado do OpenStack e suas dependências criptográficas.
-
-### 3.4. Docker (Motor de Contêineres)
+### 2.1. Docker (Motor de Contêineres)
 
 O Docker é necessário para criar, isolar e executar serviços empacotados em ambientes controlados.
 ```
@@ -108,6 +97,17 @@ curl -fsSL [https://get.docker.com](https://get.docker.com) | sudo sh
 sudo usermod -aG docker $USER
 ```
 **Função do comando:** Modifica as propriedades do usuário atual logado no sistema (`$USER`), anexando-o (`-aG`) ao grupo de segurança denominado docker. Isso concede ao usuário a permissão de leitura e escrita no soquete do sistema (`/var/run/docker.sock`), permitindo executar comandos do Docker sem a necessidade de prefixá-los com sudo.
+
+---
+
+## 🛠 3. Instalação do OpenStack Client (Interface de Linha de Comando da Nuvem)
+
+Esta ferramenta abstrai as requisições HTTP/REST, permitindo consultar IDs de rede, listar instâncias e inserir chaves SSH na nuvem via linha de comando.
+```
+apt install -y python3-pip python3-dev
+apt install -y python3-openstackclient
+```
+**Função dos comandos:** O primeiro comando instala o gerenciador de pacotes da linguagem Python (pip) e as bibliotecas de desenvolvimento C/C++ necessárias para a compilação de extensões. O segundo comando utiliza o repositório do Ubuntu para baixar o cliente unificado do OpenStack e suas dependências criptográficas.
 
 ---
 
