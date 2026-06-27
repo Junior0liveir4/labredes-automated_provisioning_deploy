@@ -8,7 +8,7 @@ Projeto desenvolvido para a disciplina de Laboratório de Redes.
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![Python](https://img.shields.io/badge/Python-3.12-yellow)
 
-Este repositório contém os códigos de Infraestrutura como Código (IaC) e Gerência de Configuração responsáveis pelo provisionamento, estruturação de redes e implantação de serviços de uma plataforma distribuída operando em ambiente de nuvem OpenStack.
+Este repositório contém o memorial de execução de Infraestrutura como Código (IaC) e Gerência de Configuração responsáveis pelo provisionamento, estruturação de redes e implantação de serviços de uma plataforma distribuída operando em ambiente de nuvem OpenStack.
 
 A solução aqui documentada corresponde às atribuições do **Deploy Automatizado (VM10)**, o nó central de orquestração da arquitetura.
 
