@@ -18,7 +18,7 @@ apt install -y gnupg software-properties-common curl
 
 Chave GPG da HashiCorp:
 ```
-curl -fsSL [https://apt.releases.hashicorp.com/gpg](https://apt.releases.hashicorp.com/gpg) | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 ```
 **Função do comando:** `curl`: faz o download da chave criptográfica pública da HashiCorp (desenvolvedora do Terraform);
 
@@ -26,7 +26,7 @@ curl -fsSL [https://apt.releases.hashicorp.com/gpg](https://apt.releases.hashico
 
 `gpg --dearmor`: converte o arquivo do formato texto (ASCII) para o formato binário, salvando-o no diretório de chaves de segurança do sistema. Isso garante a autenticidade dos pacotes do Terraform.
 ```
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] [https://apt.releases.hashicorp.com](https://apt.releases.hashicorp.com) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 ```
 **Função do comando:** Constrói uma string contendo a URL do repositório oficial do Terraform e a vincula à chave criptográfica salva anteriormente. O comando `tee` grava essa string em um novo arquivo dentro do diretório de fontes do gerenciador de pacotes apt.
 
@@ -52,6 +52,8 @@ A configuração foi modularizada nos seguintes arquivos para isolamento de cont
 O arquivo `main.tf` é responsável por inicializar o plugin de comunicação com o OpenStack e definir as rotas de acesso (endpoints) da API REST.
 Criar o provider Terraform:
 ```
+mkdir ~/terraform
+mkdir ~/terraform/labredes
 nano ~/terraform/labredes/main.tf
 ```
 ```hcl
@@ -79,6 +81,7 @@ provider "openstack" {
 Inicializar o Terraform:
 ```
 cd ~/terraform/labredes
+terraform init -upgrade
 terraform init
 ```
 
@@ -89,7 +92,7 @@ nano ~/terraform/labredes/instances.tf
 ```
 resource "openstack_compute_instance_v2" "vm_teste" {
   name            = "vm-teste"
-  image_name      = "f7ca5526-1dc7-4207-adff-3178b7c5e581"
+  image_name      = "Ubuntu 24.04"
   flavor_name     = "minor.pico.large"
   key_pair        = "labredes_key"
   security_groups = ["clear", "default"]
