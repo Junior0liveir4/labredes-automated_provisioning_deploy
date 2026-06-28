@@ -91,3 +91,20 @@ Limpeza do Ambiente:
 ```
 terraform destroy -auto-approve
 ```
+---
+
+## 💡 Comandos Úteis do Ansible
+
+* `ansible -m ping <grupo>`: Testa a conectividade entre a vm controladora e as instâncias alvo definidas no inventário. O módulo `ping` não é o ICMP tradicional, mas um teste de execução Python que verifica se o Ansible consegue logar via SSH, interpretar os comandos e retornar um JSON de sucesso (`pong`).
+
+* `ansible-playbook --check <arquivo.yml>`: Executa um "modo de simulação" (`Dry Run`). O Ansible conecta-se aos hosts, verifica o estado atual de cada tarefa e compara com o que foi solicitado, mas não altera nada no sistema. É excelente para validar se sua Playbook causará alterações indesejadas antes de aplicá-las em produção.
+
+* `ansible-playbook -i <arquivo_inventario> <playbook.yml>`: Especifica explicitamente qual inventário (`hosts.ini`) deve ser utilizado para a execução. Útil quando você possui múltiplos ambientes e precisa garantir que o Ansible não utilize um arquivo padrão incorreto.
+
+* `ansible-playbook -v`: Define o nível de verbosidade (Verbose).
+`-v`: Mostra o resumo das tarefas.
+`-vvv`: Modo detalhado extremo. Exibe os comandos SSH enviados, o retorno da API, e o conteúdo exato do que está sendo injetado nas VMs. É a principal ferramenta de debugging para encontrar erros de permissão ou conexão.
+
+* `ansible -m setup <grupo>`: Coleta o "fato" (fatos do sistema) de todos os hosts do grupo. Ele retorna um dicionário JSON enorme contendo hardware, sistema operacional, interfaces de rede, uso de memória, etc. É o que o Ansible usa internamente para tomar decisões (ex: "se o SO for Ubuntu, instale via apt").
+
+* `ansible-galaxy install <role_name>`: Gerencia Roles (papéis). Roles são pacotes de automação pré-configurados pela comunidade. Em vez de escrever todo o código do zero, este comando baixa uma estrutura pronta (ex: instalar um servidor Nginx completo) diretamente do repositório oficial do Ansible Galaxy.
