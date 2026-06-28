@@ -36,7 +36,7 @@ Se a mensagem de sucesso for exibida no terminal, confirma-se que o daemon está
 
 ## 💡 Comandos Úteis do Docker
 
-**💡 Comandos de Ciclo de Vida de Containers**
+**🐳 Comandos de Ciclo de Vida de Containers**
 * `docker run -d --name <nome> <imagem>`: Cria e inicia um novo container em segundo plano (modo detached). A flag --name atribui um identificador amigável ao container para facilitar consultas futuras.
 
 * `docker stop <nome_ou_id>`: Envia um sinal de interrupção (SIGTERM) para o processo principal dentro do container, interrompendo sua execução de forma controlada.
