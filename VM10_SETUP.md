@@ -11,23 +11,23 @@ O objetivo desta fase é estabelecer a conectividade de rede com o ambiente de p
 A VM10 foi provisionada com duas interfaces de rede físicas virtuais:
 
 * `ens3`: Conectada à rede de gerência (labredes1), recebendo endereçamento via DHCP.
-* `ens7`: Conectada à rede interna de provisionamento (VLAN10_DEPLOY), exigindo configuração de IP estático.
+* `ens4`: Conectada à rede interna de provisionamento (VLAN10_DEPLOY), exigindo configuração de IP estático.
 
 ### 1.1. Ativação Temporária em Memória
 
 Para estabelecer acesso imediato à rede interna de deploy, os seguintes comandos foram enviados diretamente ao kernel do sistema operacional:
 
 ```
-ip link set ens7 up
+ip link set ens4 up
 ```
 **Função do comando:** Altera o estado administrativo da interface de rede ens7 de "DOWN" para "UP".
 Isso instrui o kernel do Linux a ativar a placa de rede para o envio e recebimento de quadros ethernet na Camada 2.
 
 
 ```
-ip addr add 10.0.110.8/24 dev ens7
+ip addr add 10.0.110.8/24 dev ens4
 ```
-**Função do comando:** Vincula o endereço IPv4 estático `10.0.110.8`, com a máscara de sub-rede `/24 (255.255.255.0)`, à interface `ens7`.
+**Função do comando:** Vincula o endereço IPv4 estático `10.0.110.8`, com a máscara de sub-rede `/24 (255.255.255.0)`, à interface `ens4`.
 Esta configuração ocorre na memória volátil e permite o roteamento imediato de pacotes IP, mas não sobrevive a uma reinicialização do sistema.
 
 ### 1.2. Configuração de Persistência (Netplan)
@@ -50,13 +50,13 @@ network:
       set-name: "ens3"
       mtu: 1450
 
-    ens7:
+    ens4:
       match:
-        macaddress: "mac da sua vm correposndente a interface ens7"
+        macaddress: "mac da sua vm correposndente a interface ens4"
       addresses:
         - 10.0.110.8/24
       dhcp4: true
-      set-name: "ens7"
+      set-name: "ens4"
       mtu: 1450
 ```
 Aplique as configurações:
