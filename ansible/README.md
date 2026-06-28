@@ -38,7 +38,7 @@ Usando o modelo do arquivo de criação de VM feito anteriormente no tutorial de
 terraform plan
 terraform apply -auto-approve
 ```
-Agora, crie o Playbook que contém a sequência de tarefas que o Ansible executará na máquina:
+Agora, crie o *Playbook* que contém a sequência de tarefas que o Ansible executará na máquina:
 ```
 nano ~/ansible/labredes/instalar_ovs.yml
 ```
